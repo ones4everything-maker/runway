@@ -1,0 +1,166 @@
+<div class="page-wrapper text-white" data-section-id="{{ section.id }}">
+  <div class="container mx-auto px-4 py-12 md:py-20">
+    <header class="text-center mb-12">
+      {%- if section.settings.title != blank -%}
+        <h1 class="title-glow text-4xl md:text-7xl font-bold tracking-tighter" style="background: -webkit-linear-gradient(45deg, #d2a8ff, #a37efb); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+          {{ section.settings.title }}
+        </h1>
+      {%- endif -%}
+      {%- if section.settings.subtitle != blank -%}
+        <p class="text-gray-400 mt-2 text-base md:text-lg">{{ section.settings.subtitle }}</p>
+      {%- endif -%}
+    </header>
+    
+    <div class="prism-container" data-orbital data-speed="2">
+      <div class="prism-core">
+        <svg class="prism-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="prismGradient-{{ section.id }}" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:rgba(137, 226, 255, 0.6)" />
+              <stop offset="100%" style="stop-color:rgba(189, 137, 255, 0.6)" />
+            </linearGradient>
+            <linearGradient id="prismStroke-{{ section.id }}" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#a8c0ff" />
+              <stop offset="100%" style="stop-color:#c9a8ff" />
+            </linearGradient>
+          </defs>
+          <g opacity="0.8">
+            <path d="M100 10 L190 90 L100 170 L10 90 Z" fill="url(#prismGradient-{{ section.id }})" stroke="url(#prismStroke-{{ section.id }})" stroke-width="1.5" />
+            <path d="M100 10 L100 170" stroke="url(#prismStroke-{{ section.id }})" stroke-width="1" />
+            <path d="M10 90 L190 90" stroke="url(#prismStroke-{{ section.id }})" stroke-width="1" />
+          </g>
+          <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="32" md:font-size="40" font-family="Inter, sans-serif" font-weight="bold" style="text-shadow: 0 0 10px rgba(255,255,255,0.7);">
+            Ones4
+          </text>
+        </svg>
+        
+        {%- assign categories = "Packs,Tops,LuveDelicious,Keylace,Swimwear,New Category" | split: ',' -%}
+        {%- for category in categories -%}
+          <div class="category-card" data-orbital-card>
+            <div class="card-flipper">
+              <a href="/collections/{{ category | handle }}" class="card-front">
+                <img src="https://placehold.co/140x120/110f1a/ffffff?text={{ category }}" alt="{{ category }}">
+                <div class="content">{{ category }}</div>
+              </a>
+              <a href="/collections/{{ category | handle }}" class="card-back">
+                <span class="text-lg font-bold text-purple-300 hover:text-white transition-colors">{{ category }}</span>
+              </a>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Hero - Prism Orbit",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Ones4"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Beyond Standard. Uniquely Yours"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero - Prism Orbit"
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+  @keyframes title-glow {
+      0%, 100% { text-shadow: 0 0 10px rgba(200, 160, 255, 0.5), 0 0 20px rgba(200, 160, 255, 0.3); }
+      50% { text-shadow: 0 0 20px rgba(200, 160, 255, 0.8), 0 0 40px rgba(200, 160, 255, 0.5); }
+  }
+  .title-glow {
+      animation: title-glow 4s ease-in-out infinite;
+  }
+  .prism-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      width: 100%;
+      min-height: 450px;
+      margin-bottom: 4rem;
+      perspective: 1200px;
+  }
+  @media (min-width: 768px) { .prism-container { min-height: 600px; } }
+  .prism-core {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+  }
+  .prism-svg {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 200px;
+      height: 200px;
+      transform: translate(-50%, -50%);
+      filter: drop-shadow(0 0 35px rgba(170, 120, 255, 0.6));
+      animation: pulse-glow 4s infinite ease-in-out;
+  }
+  @media (min-width: 768px) { .prism-svg { width: 280px; height: 280px; } }
+  @keyframes pulse-glow {
+      0%, 100% { filter: drop-shadow(0 0 35px rgba(170, 120, 255, 0.6)); transform: translate(-50%, -50%) scale(1); }
+      50% { filter: drop-shadow(0 0 55px rgba(170, 120, 255, 0.9)); transform: translate(-50%, -50%) scale(1.05); }
+  }
+  .category-card {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 120px; height: 160px;
+      margin-left: -60px; margin-top: -80px;
+      transition: transform .3s ease, box-shadow .3s ease;
+      cursor: pointer;
+      transform-style: preserve-3d;
+  }
+   .card-flipper {
+      transition: transform .8s cubic-bezier(.175,.885,.32,1.275);
+      transform-style: preserve-3d;
+      width: 100%;
+      height: 100%;
+      position: relative;
+  }
+  .category-card:hover .card-flipper {
+      transform: rotateY(180deg);
+  }
+  .card-front, .card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      background-color: rgba(23,19,38,0.5);
+      border: 1px solid rgba(128,90,213,0.4);
+      clip-path: polygon(0 15px, 15px 0, calc(100% - 15px) 0, 100% 15px, 100% calc(100% - 15px), calc(100% - 15px) 100%, 15px 100%, 0 calc(100% - 15px));
+      backdrop-filter: blur(8px);
+  }
+  .card-back {
+      transform: rotateY(180deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+  @media (min-width: 768px) {
+      .category-card { width: 140px; height: 190px; margin-left: -70px; margin-top: -95px; }
+  }
+  .category-card .content { padding: 0.5rem; font-size: 0.875rem; text-align: center; color: #e0d8ff; font-weight: 600; }
+  .category-card img { width: 100%; height: 90px; object-fit: cover; opacity: 0.8; transition: opacity 0.5s ease-in-out; }
+  @media (min-width: 768px) {
+      .category-card img { height: 120px; }
+      .category-card .content { padding: 1rem; }
+  }
+{% endstylesheet %}
